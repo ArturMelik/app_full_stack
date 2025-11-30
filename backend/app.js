@@ -18,6 +18,15 @@ pool.query('SELECT NOW()')
 app.use(cors());
 app.use(express.json()); 
 
+// Importar el archivo de rutas
+const userRoutes = require('./routes/users.route.js'); 
+
+// Asignar las rutas al endpoint base /api/users
+app.use('/api/users', userRoutes);
+
+const authRoutes = require('./routes/auth.route.js'); 
+app.use('/api/auth', authRoutes); // Monta las rutas de autenticación en /api/auth
+
 // Ruta de prueba
 app.get('/', (req, res) => {
     res.status(200).json({ message: "Servidor operativo en puerto 5000." });
