@@ -28,6 +28,15 @@ app.use('/api/users', userRoutes);
 const authRoutes = require('./routes/auth.route.js'); 
 app.use('/api/auth', authRoutes); // Monta las rutas de autenticación en /api/auth
 
+const providerRoutes = require('./routes/providers.route.js'); 
+app.use('/api/providers', providerRoutes); // Monta las rutas de proveedores en /api/providers
+
+const productRoutes = require('./routes/products.route.js'); 
+app.use('/api/products', productRoutes); // Monta las rutas de productos en /api/products
+
+const favoriteRoutes = require('./routes/favorites.route.js'); 
+app.use('/api/favorites', favoriteRoutes); // Monta las rutas de favoritos en /api/favorites
+
 
 // Ruta de prueba
 app.get('/', (req, res) => {
