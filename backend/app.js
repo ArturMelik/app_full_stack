@@ -1,4 +1,5 @@
 // Importar módulos
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
@@ -26,6 +27,7 @@ app.use('/api/users', userRoutes);
 
 const authRoutes = require('./routes/auth.route.js'); 
 app.use('/api/auth', authRoutes); // Monta las rutas de autenticación en /api/auth
+
 
 // Ruta de prueba
 app.get('/', (req, res) => {

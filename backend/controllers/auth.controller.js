@@ -7,6 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // --- FUNCIÓN LOGIN (POST /api/auth/login) ---
 async function login(req, res) {
+    console.log("--> JWT_SECRET detectado:", JWT_SECRET); // <--- ¡AÑADE ESTA LÍNEA!
     const { email, password } = req.body;
     
     try {

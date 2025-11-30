@@ -65,10 +65,27 @@ const getUserByEmail = async (email) => {
 };
 
 
+const getUserById = async (id) => {
+    let client, result;
+    try {
+        client = await pool.connect(); 
+        const data = await client.query(queries.getUserById, [id]);
+        result = data.rows[0]; 
+    } catch (err) {
+        console.error('Error en userModel.getUserById:', err);
+        throw err;
+    } finally {
+        if (client) client.release();
+    }
+    return result;
+};
+
+
 const userModel = {
     getAllUsers,
     createUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 };
 
 module.exports = userModel;
