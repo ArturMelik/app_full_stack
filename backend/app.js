@@ -7,6 +7,10 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000; // Puerto 5000 para el Backend
 
+// NUEVOS IMPORTS para Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger.js');
+
 // Importar el pool de conexión SQL (¡Ahora hacemos la prueba!)
 const pool = require('./config/db');
 
@@ -21,6 +25,9 @@ app.use(express.json());
 
 // Importar el archivo de rutas
 const userRoutes = require('./routes/users.route.js'); 
+
+// Abrir en el navegador: http://localhost:5000/api-docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Asignar las rutas al endpoint base /api/users
 app.use('/api/users', userRoutes);
