@@ -1,6 +1,7 @@
 // Importar módulos
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 
 // Inicializar Express
@@ -29,6 +30,9 @@ const userRoutes = require('./routes/users.route.js');
 // Abrir en el navegador: http://localhost:5000/api-docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Endpoint: http://localhost:5000/api-jsdoc
+app.use('/api-jsdoc', express.static(path.join(__dirname, 'docs', 'jsdoc')));
+
 // Asignar las rutas al endpoint base /api/users
 app.use('/api/users', userRoutes);
 
@@ -45,10 +49,18 @@ const favoriteRoutes = require('./routes/favorites.route.js');
 app.use('/api/favorites', favoriteRoutes); // Monta las rutas de favoritos en /api/favorites
 
 
+const error404 = require('./middleware/error404.js');
+
+
 // Ruta de prueba
 app.get('/', (req, res) => {
     res.status(200).json({ message: "Servidor operativo en puerto 5000." });
+
 });
+
+
+app.use(error404);
+
 
 // Iniciar servidor
 app.listen(PORT, () => {
