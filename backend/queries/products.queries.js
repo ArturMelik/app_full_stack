@@ -11,9 +11,23 @@ const getAllProducts = `
     JOIN providers pr ON p.id_provider = pr.id_provider
 `;
 
+const getProductById = `
+    SELECT 
+        p.id_product, 
+        p.name, 
+        p.price, 
+        p.description, 
+        p.img, 
+        pr.companyname AS provider_name
+    FROM products p
+    JOIN providers pr ON p.id_provider = pr.id_provider
+    WHERE p.id_product = $1; 
+`;
+
 const productQueries = {
     createProduct,
-    getAllProducts
+    getAllProducts,
+    getProductById
 };
 
 module.exports = productQueries;

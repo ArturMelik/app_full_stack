@@ -38,7 +38,32 @@ const getProducts = async (req, res) => {
     }
 };
 
+
+const getProductById = async (req, res) => {
+    // El ID viene como parámetro de la URL (ej. /api/products/1)
+    const id_product = parseInt(req.params.id); 
+
+    if (isNaN(id_product)) {
+        return res.status(400).json({ error: 'El ID del producto debe ser un número válido.' });
+    }
+
+    try {
+        const product = await productModel.getProductByIdModel(id_product);
+        
+        if (!product) {
+            // Si la consulta no devuelve filas (el producto no existe)
+            return res.status(404).json({ error: 'Producto no encontrado.' });
+        }
+
+        res.status(200).json(product);
+    } catch (error) {
+        console.error('Error al obtener producto por ID:', error.message);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
 module.exports = {
     createProduct,
-    getProducts
+    getProducts,
+    getProductById
 };

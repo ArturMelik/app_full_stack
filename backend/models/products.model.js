@@ -36,7 +36,26 @@ const getAllProductsModel = async () => {
 };
 
 
+const getProductByIdModel = async (id_product) => {
+    let client, result;
+    try {
+        client = await pool.connect();
+        // Usamos el ID como parámetro $1
+        const data = await client.query(queries.getProductById, [id_product]);
+        result = data.rows[0]; // Solo esperamos un resultado
+
+    } catch (err) {
+        console.error('Error en productModel.getProductByIdModel:', err.message);
+        throw err;
+    } finally {
+        if (client) client.release();
+    }
+    return result;
+};
+
+
 module.exports = {
     createProductModel,
-    getAllProductsModel
+    getAllProductsModel,
+    getProductByIdModel
 };
