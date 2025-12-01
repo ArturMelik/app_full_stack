@@ -62,8 +62,33 @@ const getProductById = async (req, res) => {
     }
 };
 
+const editProduct = async (req, res) => {
+    const productId = req.params.id;
+    const productData = req.body;
+
+    // ... (validaciones de datos)
+
+    try {
+        const updatedProduct = await productModel.updateProductModel(productId, productData);
+
+        if (!updatedProduct) {
+            return res.status(404).json({ error: `Producto con ID ${productId} no encontrado.` });
+        }
+
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        // Manejo específico del error de proveedor no existente desde el modelo
+        if (error.message.includes('proveedor')) { 
+             return res.status(404).json({ error: error.message });
+        }
+        console.error('Error al editar producto:', error.message);
+        res.status(500).json({ error: 'Error interno del servidor al editar el producto.' });
+    }
+};
+
 module.exports = {
     createProduct,
     getProducts,
-    getProductById
+    getProductById,
+    editProduct
 };

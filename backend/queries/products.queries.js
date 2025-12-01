@@ -24,10 +24,26 @@ const getProductById = `
     WHERE p.id_product = $1; 
 `;
 
+const updateProductQuery = (id, { name, price, description, img, id_provider }) => {
+    const query = `
+        UPDATE products
+        SET name = $1, 
+            price = $2, 
+            description = $3, 
+            img = $4, 
+            id_provider = $5
+        WHERE id_product = $6  
+        RETURNING *;
+    `;
+    const values = [name, price, description, img, id_provider, id];
+    return { query, values };
+};
+
 const productQueries = {
     createProduct,
     getAllProducts,
-    getProductById
+    getProductById,
+    updateProductQuery
 };
 
 module.exports = productQueries;

@@ -53,9 +53,32 @@ const getProductByIdModel = async (id_product) => {
     return result;
 };
 
+const updateProductModel = async (id, productData) => {
+    let client, result;
+    const { query, values } = queries.updateProductQuery(id, productData);
+    
+    try {
+        client = await pool.connect(); // <--- ¡Conectar el cliente primero!
+        // Ahora usamos client.query, como en las otras funciones
+        const data = await client.query(query, values); 
+        result = data.rows[0] || null;
+        
+    } catch (error) {
+        // Manejar el error de clave foránea no existente si aplica (proveedor)
+        if (error.code === '23503') { 
+            throw new Error(`El proveedor con ID ${productData.id_provider} no existe.`);
+        }
+        console.error('Error en productModel.updateProductModel:', error.message);
+        throw new Error('Error al actualizar el producto en la base de datos.');
+    } finally {
+        if (client) client.release(); // <--- Liberar el cliente al final
+    }
+    return result;
+};
 
 module.exports = {
     createProductModel,
     getAllProductsModel,
-    getProductByIdModel
+    getProductByIdModel,
+    updateProductModel
 };

@@ -1,0 +1,143 @@
+🔑 1. Autenticación (Rutas Públicas)
+1.1 Iniciar Sesión (POST /auth/login)
+Esta es la primera petición que debes hacer para obtener el token.
+
+Requisito: Ninguna cabecera de seguridad.
+
+JSON
+
+{
+  "email": "user_o_admin@tienda.com",
+  "password": "password_segura"
+}
+
+
+...............
+
+
+🛒 2. Productos (Creación - Solo Admin)
+2.1 Crear Producto (POST /products)
+Requisito: El token JWT debe pertenecer a un usuario con rol admin.
+
+Cabecera: Authorization: Bearer <TOKEN_ADMIN>
+
+JSON
+
+{
+  "name": "Teclado Mecánico RGB Pro",
+  "price": 129.50,
+  "description": "Teclado de alto rendimiento con switches Cherry MX.",
+  "img": "https://img.tienda.com/teclado.jpg",
+  "id_provider": 2 
+}
+
+
+...............
+
+
+
+¡Entendido! Lo que necesitas son los cuerpos JSON exactos para pegar directamente en Thunder Client para cada tipo de operación, sin tablas, y la información de las cabeceras de seguridad.
+
+Aquí tienes los ejemplos de los objetos JSON y los requisitos de cada ruta, indicando el rol.
+
+🔑 1. Autenticación (Rutas Públicas)
+1.1 Iniciar Sesión (POST /auth/login)
+Esta es la primera petición que debes hacer para obtener el token.
+
+
+Crear user
+{
+  "username": "Artur Melik",
+  "email": "artur@gmail.com",
+  "password": "123456",
+  "role": "admin"
+}
+
+Requisito: Ninguna cabecera de seguridad.
+
+JSON
+
+{
+  "email": "artur@gmail.com",
+  "password": "123456"
+}
+Resultado: Recibirás un token JWT. Úsalo para llenar la cabecera Authorization en las siguientes peticiones.
+
+
+
+🛒 2. Productos (Creación - Solo Admin)
+2.1 Crear Producto (POST /products)
+Requisito: El token JWT debe pertenecer a un usuario con rol admin.
+
+Cabecera: Authorization: Bearer <TOKEN_ADMIN>
+
+JSON
+
+{
+  "name": "Teclado Mecánico RGB Pro",
+  "price": 129.50,
+  "description": "Teclado de alto rendimiento con switches Cherry MX.",
+  "img": "https://img.tienda.com/teclado.jpg",
+  "id_provider": 2 
+}
+
+
+editar producto solo admin
+{
+  "name": "La ultima Tarjeta Gráfica RTX 4080 (Edición 2025)",
+  "price": 1250.00,
+  "description": "Potente tarjeta gráfica de última generación para IA y gaming 8K.",
+  "img": "https://img.tienda.com/rtx4080_editada.png",
+  "id_provider": 2
+}
+
+
+
+
+📦 3. Proveedores (Creación - Solo Admin)
+3.1 Crear Proveedor (POST /providers)
+Requisito: El token JWT debe pertenecer a un usuario con rol admin.
+
+Cabecera: Authorization: Bearer <TOKEN_ADMIN>
+
+JSON
+
+{
+  "companyname": "NVIDIA Corp.",
+  "website": "https://www.nvidia.com",
+  "img": "https://img.tienda.com/logo_nvidia.png"
+}
+
+............
+
+
+❤️ 4. Favoritos (Gestión - Solo Usuario Autenticado)
+Estas peticiones solo requieren el ID del producto que quieres gestionar.
+
+4.1 Añadir a Favoritos (POST /favorites)
+Requisito: El token JWT debe pertenecer a cualquier usuario autenticado (user o admin).
+
+Cabecera: Authorization: Bearer <TOKEN_USER>
+
+JSON
+
+{
+  "id_product": 7 
+}
+
+.............
+
+
+4.2 Eliminar de Favoritos (DELETE /favorites)
+Requisito: El token JWT debe pertenecer a cualquier usuario autenticado.
+
+Cabecera: Authorization: Bearer <TOKEN_USER>
+
+JSON
+
+{
+  "id_product": 7
+}
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzY0NjEyODM2LCJleHAiOjE3NjQ2MTY0MzZ9.rZKxvAedSH0E2Z4GGwlHbncGriPbyiWLxnzs5LZs-Nc
