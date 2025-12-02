@@ -7,7 +7,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // --- FUNCIÓN LOGIN (POST /api/auth/login) ---
 async function login(req, res) {
-    console.log("--> JWT_SECRET detectado:", JWT_SECRET); // <--- ¡AÑADE ESTA LÍNEA!
     const { email, password } = req.body;
     
     try {
@@ -16,14 +15,14 @@ async function login(req, res) {
 
         // Si el usuario no existe
         if (!user) {
-            return res.status(401).json({ error: 'Credenciales inválidas.' });
+            return res.status(401).json({ error: 'Usuario no encontrado.' });
         }
 
         // 2. Comparar la contraseña (bcrypt.compare)
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(401).json({ error: 'Credenciales inválidas.' });
+            return res.status(401).json({ error: 'Usuario no encontrado.' });
         }
 
         // 3. Generar el Token JWT
@@ -46,8 +45,9 @@ async function login(req, res) {
     }
 }
 
+
+
 // --- FUNCIÓN LOGOUT (POST /api/auth/logout) ---
-// Simplemente indica que la sesión ha terminado
 function logout(req, res) {
     return res.status(200).json({ message: 'Sesión cerrada correctamente.' });
 }

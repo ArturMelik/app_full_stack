@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs'); // bcryptjs para hashing de contraseñas
-const queries = require("../queries/users.queries"); // Importa las consultas SQL
-const pool = require("../config/db"); // Importa el pool de conexión PostgreSQL
+const queries = require("../queries/users.queries"); // Importar las consultas SQL
+const pool = require("../config/db"); // Importar el pool de conexión PostgreSQL
 
 // --- FUNCIÓN GET (Obtener todos los usuarios) ---
 const getAllUsers = async () => {
