@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const favoriteController = require("../controllers/favorites.controller");
-const { protect } = require("../middleware/auth.middleware"); // seguridad
+const { protect } = require("../middleware/auth.middleware"); // 
 
 // http://localhost:5000/api/favorites
 // Todas las rutas de favoritos requieren que el usuario esté logueado

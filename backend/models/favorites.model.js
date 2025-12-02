@@ -7,6 +7,14 @@ const createFavoriteModel = async (id_user, id_product) => {
     let client, result;
     try {
         client = await pool.connect();
+
+        const check = await client.query(queries.checkIfFavoriteExists, [id_user, id_product]);
+        if (check.rows.length > 0) {
+            // Si check.rows tiene resultados, significa que ya existe.
+            // Lanzamo un error CLARO para que el controlador lo capture.
+            throw new Error("Ya tienes este producto añadido a favoritos.");
+        }
+
         const data = await client.query(queries.createFavorite, [id_user, id_product]);
         result = data.rows[0];
         
@@ -52,7 +60,7 @@ const deleteFavoriteModel = async (id_user, id_product) => {
         rows = data.rows; 
 
         if (rows.length === 0) {
-            throw new Error("El producto no estaba en tus favoritos.");
+            throw new Error("El producto no esta en tus favoritos.");
         }
         
     } catch (err) {

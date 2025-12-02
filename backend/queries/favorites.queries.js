@@ -19,6 +19,11 @@ const getAllFavorites = `
     JOIN products p ON f.id_product = p.id_product
     WHERE f.id_user = $1;
 `;
+const checkIfFavoriteExists = `
+    SELECT id_user 
+    FROM favorites 
+    WHERE id_user = $1 AND id_product = $2;
+`;
 
 // DELETE: Eliminar un producto de favoritos.
 const deleteFavorite = `
@@ -30,6 +35,7 @@ const deleteFavorite = `
 const favoriteQueries = {
     createFavorite,
     getAllFavorites,
+    checkIfFavoriteExists,
     deleteFavorite
 };
 
