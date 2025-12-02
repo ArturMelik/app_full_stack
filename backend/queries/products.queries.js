@@ -39,11 +39,22 @@ const updateProductQuery = (id, { name, price, description, img, id_provider }) 
     return { query, values };
 };
 
+/**
+ * Query para eliminar un producto por su ID.
+ * @returns {string} Consulta SQL de tipo DELETE.
+ */
+const deleteProduct = ` 
+    DELETE FROM products
+    WHERE id_product = $1
+    RETURNING id_product;
+`;
+
 const productQueries = {
     createProduct,
     getAllProducts,
     getProductById,
-    updateProductQuery
+    updateProductQuery,
+    deleteProduct
 };
 
 module.exports = productQueries;

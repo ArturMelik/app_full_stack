@@ -86,9 +86,39 @@ const editProduct = async (req, res) => {
     }
 };
 
+
+/**
+ * @description Elimina un producto por su ID.
+ * @route DELETE /api/products/:id
+ * @access Private (Admin Only)
+ * @param {object} req - Petición HTTP.
+ * @param {object} res - Respuesta HTTP.
+ */
+const deleteProduct = async (req, res) => { 
+    const productId = req.params.id;
+
+    try {
+        const deletedProduct = await productModel.deleteProductModel(productId); 
+
+        if (!deletedProduct) {
+            return res.status(404).json({ error: `Producto con ID ${productId} no encontrado.` });
+        }
+        return res.status(200).json({ 
+            message: `El producto con ID ${productId} ha sido eliminado.`
+        });
+
+        // 204 No Content es la respuesta estándar para DELETE exitoso.
+        res.status(204).send(); 
+    } catch (error) {
+        console.error('Error al eliminar producto:', error.message);
+        return res.status(500).json({ error: 'Error interno del servidor al eliminar el producto.' });
+    }
+};
+
 module.exports = {
     createProduct,
     getProducts,
     getProductById,
-    editProduct
+    editProduct,
+    deleteProduct
 };

@@ -131,6 +131,46 @@ router.post('/', protect, admin, productController.createProduct);
 // RUTA PUT: Edición de producto (Solo Admin)
 router.put('/:id', protect, admin, productController.editProduct);
 
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Eliminar un producto por su ID (Solo Admin)
+ *     tags: [Productos]
+ *     description: Elimina permanentemente un producto del catálogo de la base de datos. Requiere autenticación y el rol de administrador.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del producto a eliminar.
+ *     responses:
+ *       '200':
+ *         description: Producto eliminado con éxito. Devuelve un mensaje de confirmación.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: El producto con ID 10 ha sido eliminado.
+ *       '401':
+ *         description: No autorizado (Token faltante o inválido).
+ *       '403':
+ *         description: Prohibido (El usuario autenticado no tiene rol 'admin').
+ *       '404':
+ *         description: Producto no encontrado.
+ *       '500':
+ *         description: Error interno del servidor.
+ */
+//http://localhost:5000/api/products/:id
+// RUTA DELETE: Eliminación de producto (Solo Admin)
+router.delete('/:id', protect, admin, productController.deleteProduct);
+
 
 
 

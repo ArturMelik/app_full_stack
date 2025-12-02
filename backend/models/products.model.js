@@ -76,9 +76,33 @@ const updateProductModel = async (id, productData) => {
     return result;
 };
 
+
+/**
+ * @description Elimina un producto existente por su ID.
+ * @param {number} id - ID del producto a eliminar.
+ * @returns {object|null} El ID del producto eliminado o null si no se encontró.
+ */
+const deleteProductModel = async (id) => { //el nombre del modelo para distinguirlo del controlador
+    let client, result;
+    
+    try {
+        client = await pool.connect();
+        // Usamos la query importada 'deleteProduct'
+        const data = await client.query(queries.deleteProduct, [id]); 
+        result = data.rows[0] || null;
+    } catch (error) {
+        console.error('Error en productModel.deleteProductModel:', error.message);
+        throw new Error('Error al eliminar el producto en la base de datos.');
+    } finally {
+        if (client) client.release();
+    }
+    return result;
+};
+
 module.exports = {
     createProductModel,
     getAllProductsModel,
     getProductByIdModel,
-    updateProductModel
+    updateProductModel,
+    deleteProductModel
 };
