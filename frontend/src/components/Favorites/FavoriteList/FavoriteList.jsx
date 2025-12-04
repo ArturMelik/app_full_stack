@@ -1,84 +1,100 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const FavoriteList = () => {
-    const navigate = useNavigate();
-    const [favorites, setFavorites] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    // 1. Obtener el Token JWT
-    const token = localStorage.getItem('token'); 
+  // 1. Obtener el Token JWT
+  const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const fetchFavorites = async () => {
-            if (!token) {
-                setError("Debes iniciar sesión para ver tus favoritos.");
-                setLoading(false);
-                return;
-            }
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!token) {
+        setError("Debes iniciar sesión para ver tus favoritos.");
+        setLoading(false);
+        return;
+      }
 
-            try {
-                // 💡 Endpoint de tu API para obtener todos los favoritos
-                const url = 'http://localhost:5000/api/favorites';
-                
-                const response = await axios.get(url, {
-                    headers: {
-                        // 2. Adjuntamos el Token en el encabezado para autenticar
-                        'Authorization': `Bearer ${token}` 
-                    }
-                });
+      try {
+        // 💡 Endpoint de tu API para obtener todos los favoritos
+        const url = "http://localhost:5000/api/favorites";
 
-                // 3. Guardamos el array de productos devueltos
-                setFavorites(response.data); 
-                
-            } catch (err) {
-                console.error("Error al cargar favoritos:", err);
-                setError("Error al cargar la lista de favoritos.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        const response = await axios.get(url, {
+          headers: {
+            // 2. Adjuntamos el Token en el encabezado para autenticar
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        fetchFavorites();
-    }, [token]);
+        // 3. Guardamos el array de productos devueltos
+        setFavorites(response.data);
+      } catch (err) {
+        console.error("Error al cargar favoritos:", err);
+        setError("Error al cargar la lista de favoritos.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (loading) return <p>Cargando favoritos...</p>;
-    
-    if (error) return <p>{error}</p>;
+    fetchFavorites();
+  }, [token]);
 
-    if (favorites.length === 0) {
-        return (
-            <div>
-                <h1>Mis Favoritos</h1>
-                <p>No tienes productos marcados como favoritos.</p>
-            </div>
-        );
+  // ⭐⭐⭐ AÑADIDO: función para eliminar
+  const deleteFavorite = async (productId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/favorites/`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { id_product: productId }
+      });
+
+      // eliminarlo del estado para actualizar la UI
+      setFavorites((prev) => prev.filter((f) => f.id_product !== productId));
+    } catch (err) {
+      console.error("Error al borrar favorito:", err);
+      alert("No se pudo eliminar este favorito.");
     }
+  };
 
-    // 4. Renderizado de la lista
+  if (loading) return <p>Cargando favoritos...</p>;
+
+  if (error) return <p>{error}</p>;
+
+  if (favorites.length === 0) {
     return (
-        <>
-            <h1>Mis Favoritos</h1>
-            <ul>
-                {favorites.map((item) => (
-                    // Usamos 'item.id_product' como key y para la navegación
-                    <li key={item.id_product}>
-                        <img src={item.img} alt={item.name} style={{ width: "150px" }} />
-                        <p>Nombre: {item.name}</p>
-                        <p>Precio: ${item.price}</p>
-                        
-                        <button 
-                            onClick={() => navigate(`/products/${item.id_product}`)}
-                        >
-                            Ver Detalles
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </>
+      <div>
+        <h1>Mis Favoritos</h1>
+        <p>No tienes productos marcados como favoritos.</p>
+      </div>
     );
+  }
+
+  // 4. Renderizado de la lista
+  return (
+    <>
+      <h1>Mis Favoritos</h1>
+      <ul>
+        {favorites.map((item) => (
+          // Usamos 'item.id_product' como key y para la navegación
+          <li key={item.id_product}>
+            <img src={item.img} alt={item.name} style={{ width: "150px" }} />
+            <p>Nombre: {item.name}</p>
+            <p>Precio: ${item.price}</p>
+
+            <button onClick={() => navigate(`/products/${item.id_product}`)}>
+              Ver Detalles
+            </button>
+            <button onClick={() => deleteFavorite(item.id_product)}>
+              Eliminar Favorito
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
 };
 
 export default FavoriteList;

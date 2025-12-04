@@ -9,7 +9,7 @@ const Header = () => {
     
   };
 
-  return <header>Header
+  return <header>
     <Nav />
     <button onClick={handleLogout}>logout</button>
   </header>;
