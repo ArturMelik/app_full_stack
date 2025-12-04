@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 
 
-export default function Login() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -34,6 +34,8 @@ export default function Login() {
 
       setSuccess("Login correcto. Bienvenido!");
       console.log("TOKEN:", data.token);
+
+      setPassword("");
 
     } catch (error) {
       console.error(error);
@@ -68,3 +70,5 @@ export default function Login() {
     </form>
   );
 }
+
+export default Login;
