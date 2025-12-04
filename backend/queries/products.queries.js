@@ -4,12 +4,16 @@ const createProduct = `
     RETURNING id_product, name, price;
 `;
 
-const getAllProducts = `
-    SELECT p.id_product, p.name, p.price, p.description, p.img, 
-           pr.companyname AS provider_name
-    FROM products p
-    JOIN providers pr ON p.id_provider = pr.id_provider
-`;
+const getAllProducts = `SELECT 
+    p.id_product,
+    p.name,
+    p.price,
+    p.description,
+    p.img,
+    pr.companyname AS provider_name
+FROM products p
+JOIN providers pr ON p.id_provider = pr.id_provider
+ORDER BY p.id_product;`;
 
 const getProductById = `
     SELECT 
