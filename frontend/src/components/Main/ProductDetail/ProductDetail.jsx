@@ -1,22 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import FavoriteButton  from "../../Favorites/FavoriteButton/FavoriteButton.jsx";
+import StarRating from "../ProductDetail/StarRating/StarRating.jsx";
+import FavoriteButton from "../../Favorites/FavoriteButton/FavoriteButton.jsx";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [data, setData] = useState(null); // puede ser un objeto o un array
   const [loading, setLoading] = useState(true);
+
+  //para paginacion
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  //estado para ordenamiento
+  const [sortField, setSortField] = useState(""); // campo por el que se ordena
+  const [sortOrder, setSortOrder] = useState(""); // ascendente o descendente
+
+  //buscador
+  const [query, setQuery] = useState(""); // Lo que el usuario escribe actualmente
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el buscador
+
+  const handleSearch = () => {
+    setSearchTerm(query); // Pasamos el texto escrito al término de búsqueda real
+    setPage(1); // Siempre volvemos a la página 1 al buscar
+  };
+
+  //  alternar ordenamiento (de mas menos o menos mas)
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // alterna
+    } else {
+      setSortField(field);
+      setSortOrder("asc"); // nuevo campo, empieza ascendente
+    }
+    setPage(1); // reset a primera página cuando cambias la ordenación
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = id
-          ? `http://localhost:5000/api/products/${id}`
-          : "http://localhost:5000/api/products";
+        let url;
+
+        if (id) {
+          // Detalle de producto individual
+          url = `http://localhost:5000/api/products/${id}`;
+        } else if (searchTerm) {
+          // Si el usuario está buscando algo
+          url = `http://localhost:5000/api/products/search?q=${searchTerm}&sort=${sortField}&order=${sortOrder}`;
+        } else {
+          // Lista general con paginación y orden
+          url = `http://localhost:5000/api/products?page=${page}&limit=10&sort=${sortField}&order=${sortOrder}`;
+        }
+
         const response = await axios.get(url);
-        setData(response.data);
+
+        if (!id) {
+          // Si es búsqueda o lista, response.data debería ser un array o contener la lista
+          const products = searchTerm ? response.data : response.data.products;
+          setData(products);
+
+          if (!searchTerm) {
+            setTotalPages(Math.ceil(response.data.totalItems / 10));
+          } else {
+            setTotalPages(1); // En búsqueda desactivar paginación simple o dejar en 1
+          }
+        } else {
+          setData(response.data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -25,7 +78,7 @@ const ProductDetail = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, page, sortField, sortOrder, searchTerm]); 
 
   if (loading) return <p>Cargando...</p>;
 
@@ -40,38 +93,94 @@ const ProductDetail = () => {
           <p>Nombre: {data.name}</p>
           <p>Descripción: {data.description}</p>
           <p>Precio: ${data.price}</p>
+          <p>
+            Valoraciones: <StarRating rating={data.relevancia} />
+          </p>
         </article>
       </div>
     );
   }
 
-  // Si no hay ID, mostramos lista
+  // Si no hay ID, mostro lista
   if (!id && Array.isArray(data)) {
     return (
       <>
         <h1>Todos los Productos</h1>
-        <ul>
+
+        {/* BUSCADOR */}
+        <input
+          type="text"
+          placeholder="Buscar por producto o marca..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{ padding: "5px", width: "250px" }}
+        />
+
+        {/* BOTÓN DE BÚSQUEDA */}
+        <button
+          onClick={handleSearch}
+          style={{ marginLeft: "10px", padding: "5px 15px" }}
+        >
+          Buscar
+        </button>
+
+        <nav style={{ marginBottom: "20px" }}>
+          <button onClick={() => handleSort("name")}>
+            Nombre{" "}
+            {sortField === "name" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+          </button>
+          <button onClick={() => handleSort("relevancia")}>
+            Relevancia{" "}
+            {sortField === "relevancia"
+              ? sortOrder === "asc"
+                ? "▲"
+                : "▼"
+              : ""}
+          </button>
+          <button onClick={() => handleSort("price")}>
+            Precio{" "}
+            {sortField === "price" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+          </button>
+        </nav>
+
+        <section>
           {data.map((item, idx) => (
             <article key={idx}>
               <img src={item.img} alt={item.name} style={{ width: "200px" }} />
               <br />
-              Marca: {item.provider_name}
-              <br />
-              Nombre:
-              {item.name}
-              <br />
-              Precio: ${item.price}
-              <br />
-              {/* Botón ver detalles */}
+              <p> Marca: {item.provider_name}</p>
+              <p>Nombre: {item.name}</p>
+              <p>
+                Valoraciones: <StarRating rating={item.relevancia} />
+              </p>
+              <p>Precio: ${item.price}</p>
               <button onClick={() => navigate(`/product/${item.id_product}`)}>
                 Ver Detalles
               </button>
-                <FavoriteButton productId={item.id_product} />
+              <FavoriteButton productId={item.id_product} />
               <br />
               <br />
             </article>
           ))}
-        </ul>
+        </section>
+
+        {/*CONTROLES DE PAGINACIÓN*/}
+        <div style={{ marginTop: "20px" }}>
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            ◀ Anterior
+          </button>
+
+          <span style={{ margin: "0 10px" }}>
+            Página {page} de {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Siguiente ▶
+          </button>
+        </div>
       </>
     );
   }

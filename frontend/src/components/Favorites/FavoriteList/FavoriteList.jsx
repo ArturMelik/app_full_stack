@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import StarRating from "../../Main/ProductDetail/StarRating/StarRating.jsx";
 
 const FavoriteList = () => {
   const navigate = useNavigate();
@@ -20,17 +21,17 @@ const FavoriteList = () => {
       }
 
       try {
-        // 💡 Endpoint de tu API para obtener todos los favoritos
+        // Endpoint de API para obtener todos los favoritos
         const url = "http://localhost:5000/api/favorites";
 
         const response = await axios.get(url, {
           headers: {
-            // 2. Adjuntamos el Token en el encabezado para autenticar
+            // el Token en el encabezado para autenticar
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // 3. Guardamos el array de productos devueltos
+        //  Guardamos el array de productos devueltos
         setFavorites(response.data);
       } catch (err) {
         console.error("Error al cargar favoritos:", err);
@@ -43,7 +44,6 @@ const FavoriteList = () => {
     fetchFavorites();
   }, [token]);
 
-  // ⭐⭐⭐ AÑADIDO: función para eliminar
   const deleteFavorite = async (productId) => {
     try {
       await axios.delete(`http://localhost:5000/api/favorites/`, {
@@ -72,27 +72,31 @@ const FavoriteList = () => {
     );
   }
 
-  // 4. Renderizado de la lista
+  // Renderizado de la lista
   return (
     <>
       <h1>Mis Favoritos</h1>
-      <ul>
+      <section>
         {favorites.map((item) => (
           // Usamos 'item.id_product' como key y para la navegación
-          <li key={item.id_product}>
+          <article key={item.id_product}>
             <img src={item.img} alt={item.name} style={{ width: "150px" }} />
-            <p>Nombre: {item.name}</p>
+            <p>Nombre: {item.product_name}</p>
             <p>Precio: ${item.price}</p>
+            <p>Valoraciones: <StarRating rating={item.relevancia} /></p>
+            <p>Proveedor: {item.provider_name}</p>
 
-            <button onClick={() => navigate(`/products/${item.id_product}`)}>
+            <button onClick={() => navigate(`/product/${item.id_product}`)}>
               Ver Detalles
             </button>
             <button onClick={() => deleteFavorite(item.id_product)}>
               Eliminar Favorito
             </button>
-          </li>
+            <br />
+            <br />
+          </article>
         ))}
-      </ul>
+      </section>
     </>
   );
 };
