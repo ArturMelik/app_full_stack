@@ -14,9 +14,12 @@ const getAllFavorites = `
         p.id_product,
         p.name AS product_name,
         p.price,
-        p.img
+        p.img,
+        p.relevancia,
+        pr.companyname AS provider_name   
     FROM favorites f
     JOIN products p ON f.id_product = p.id_product
+    JOIN providers pr ON p.id_provider = pr.id_provider   
     WHERE f.id_user = $1;
 `;
 const checkIfFavoriteExists = `

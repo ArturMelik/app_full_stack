@@ -1,9 +1,8 @@
 const productModel = require('../models/products.model');
 
 const createProduct = async (req, res) => {
-    // Asegúrate de que los campos numéricos como 'price' y 'id_provider' 
-    // sean tratados como números, no como cadenas de texto.
-    const { name, price, description, img, id_provider } = req.body;
+    
+    const { name, price, description, img, id_provider, relevancia } = req.body;
 
     if (!name || !price || !id_provider) {
         return res.status(400).json({ error: 'Nombre, precio e ID de proveedor son obligatorios.' });
@@ -14,7 +13,7 @@ const createProduct = async (req, res) => {
     }
 
     try {
-        const newProduct = await productModel.createProductModel(name, price, description, img, id_provider);
+        const newProduct = await productModel.createProductModel(name, price, description, img, id_provider, relevancia);
         res.status(201).json({ 
             message: 'Producto creado con éxito.',
             product: newProduct
@@ -30,11 +29,27 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     try {
-        const products = await productModel.getAllProductsModel();
-        res.status(200).json(products);
+        const { page, limit, sort, order } = req.query;
+
+        const pageNumber = parseInt(page) || 1;
+        const limitNumber = parseInt(limit) || 10;
+
+        // valores por defecto
+        const sortField = sort || "name";
+        const sortOrder = order === "desc" ? "DESC" : "ASC";
+
+        const result = await productModel.getAllProductsModel(
+            pageNumber,
+            limitNumber,
+            sortField,
+            sortOrder
+        );
+
+        res.status(200).json(result);
+
     } catch (error) {
-        console.error('Error al obtener productos:', error.message);
-        res.status(500).json({ error: 'Error interno del servidor.' });
+        console.error("Error al obtener productos:", error.message);
+        res.status(500).json({ error: "Error interno del servidor." });
     }
 };
 
@@ -51,7 +66,7 @@ const getProductById = async (req, res) => {
         const product = await productModel.getProductByIdModel(id_product);
         
         if (!product) {
-            // Si la consulta no devuelve filas (el producto no existe)
+
             return res.status(404).json({ error: 'Producto no encontrado.' });
         }
 
@@ -66,7 +81,7 @@ const editProduct = async (req, res) => {
     const productId = req.params.id;
     const productData = req.body;
 
-    // ... (validaciones de datos)
+    // (validaciones de datos)
 
     try {
         const updatedProduct = await productModel.updateProductModel(productId, productData);
@@ -77,7 +92,7 @@ const editProduct = async (req, res) => {
 
         res.status(200).json(updatedProduct);
     } catch (error) {
-        // Manejo específico del error de proveedor no existente desde el modelo
+
         if (error.message.includes('proveedor')) { 
              return res.status(404).json({ error: error.message });
         }
@@ -86,6 +101,23 @@ const editProduct = async (req, res) => {
     }
 };
 
+const searchProducts = async (req, res) => {
+    const searchTerm = req.query.q;
+    const sort = req.query.sort;  // Lee el campo
+    const order = req.query.order; // Lee el orden
+
+    if (!searchTerm) {
+        return res.status(400).json({ message: "Falta el término de búsqueda." });
+    }
+
+    try {
+        // Pasamos los 3 parámetros al modelo
+        const products = await productModel.searchProductsModel(searchTerm, sort, order);
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Error al realizar la búsqueda." });
+    }
+};
 
 /**
  * @description Elimina un producto por su ID.
@@ -107,7 +139,6 @@ const deleteProduct = async (req, res) => {
             message: `El producto con ID ${productId} ha sido eliminado.`
         });
 
-        // 204 No Content es la respuesta estándar para DELETE exitoso.
         res.status(204).send(); 
     } catch (error) {
         console.error('Error al eliminar producto:', error.message);
@@ -120,5 +151,6 @@ module.exports = {
     getProducts,
     getProductById,
     editProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 };

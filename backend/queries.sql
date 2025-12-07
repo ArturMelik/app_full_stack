@@ -34,3 +34,6 @@ CREATE TABLE favorites (
     FOREIGN KEY (id_user) REFERENCES users(id_user),
     FOREIGN KEY (id_product) REFERENCES products(id_product)
 );
+
+ALTER TABLE products
+ADD COLUMN relevancia INTEGER NOT NULL DEFAULT 3;

@@ -5,7 +5,7 @@ const { protect } = require('../middleware/auth.middleware'); // Opcional, si qu
 const { admin } = require('../middleware/admin.middleware'); // Opcional, si queremos que solo admins creen productos
 
 
-
+router.get('/search', productController.searchProducts);
 
 // http://localhost:5000/api-docs
 /**
