@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const FavoriteButton = ({ productId }) => {
-  // 1. Obtener el Token del localStorage
-  // 💡 Asegúrate de que 'authToken' sea la clave exacta que usas para guardar tu Token JWT.
+  // Obtengo el Token del localStorage
   const token = localStorage.getItem("token");
 
   const [loading, setLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   // Nota: La lógica para chequear si ya es favorito puede requerir un useEffect
-  // y una llamada GET a tu API de favoritos al montar el componente.
+  // y una llamada GET al API de favoritos al montar el componente.
 
   const toggleFavorite = async () => {
     // 2. Verificar si el usuario está logueado (si hay Token)
@@ -22,7 +21,7 @@ const FavoriteButton = ({ productId }) => {
     const url = "http://localhost:5000/api/favorites"; // Endpoint para gestionar favoritos
 
     try {
-      // 3. Realizar la solicitud POST adjuntando el Token
+      // Realizar la solicitud POST adjuntando el Token
       const response = await axios.post(
         url,
         {
@@ -31,7 +30,7 @@ const FavoriteButton = ({ productId }) => {
         },
         {
           headers: {
-            // 4. Configurar el encabezado Authorization: Bearer Token
+            // Configurar el encabezado Authorization: Bearer Token
             Authorization: `Bearer ${token}`,
           },
         }
