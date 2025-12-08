@@ -14,6 +14,7 @@ const getAllFavorites = `
         p.id_product,
         p.name AS product_name,
         p.price,
+        p.description,
         p.img,
         p.relevancia,
         pr.companyname AS provider_name   
@@ -28,7 +29,6 @@ const checkIfFavoriteExists = `
     WHERE id_user = $1 AND id_product = $2;
 `;
 
-// DELETE: Eliminar un producto de favoritos.
 const deleteFavorite = `
     DELETE FROM favorites
     WHERE id_user = $1 AND id_product = $2
