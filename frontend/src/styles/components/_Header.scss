@@ -1,0 +1,30 @@
+@use "../utils/variables" as variables;
+@use "../utils/mixins" as mixins;
+
+.header-day {
+  display: flex;
+  justify-content: space-between; // Separa el Nav de las acciones de usuario
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #72a4e1; 
+  color: white;
+  border-radius: 20px;
+
+  .user-actions {
+    button {
+      background: transparent;
+      border: 1px solid #fff;
+      color: white;
+      padding: 6px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f08804; 
+        border-color: #f08804;
+      }
+    }
+  }
+}

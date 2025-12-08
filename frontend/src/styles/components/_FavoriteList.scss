@@ -1,0 +1,67 @@
+@use '../utils/variables' as variables;
+@use '../utils/mixins' as mixins;
+
+.favorites-list {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  article {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+
+    // Estilo para la imagen
+    img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    // Contenedor de información (div central)
+    > div {
+      flex: 1;
+
+      span { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+      h3 { margin: 5px 0; font-size: 1.1rem; color: #333; }
+      p { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
+      
+      .price { 
+        font-weight: bold; 
+        color: #b12704; 
+        font-size: 1.1rem; 
+      }
+    }
+
+    // Navegación lateral (botones)
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      button {
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        border: 1px solid #ddd;
+        background: #fff;
+        transition: all 0.2s;
+
+        &:first-child {
+          background: #ffd814;
+          border-color: #fcd200;
+          &:hover { background: #f7ca00; }
+        }
+
+        &:last-child {
+          color: #c40000;
+          &:hover { background: #fff1f1; border-color: #c40000; }
+        }
+      }
+    }
+  }
+}

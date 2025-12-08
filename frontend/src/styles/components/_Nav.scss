@@ -1,0 +1,25 @@
+@use "../utils/variables" as variables;
+
+.nav-bar {
+  ul {
+    display: flex;
+    list-style: none; 
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+
+    li {
+      a {
+        text-decoration: none; 
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #f08804; // Color naranja a juego con el botón de logout
+        }
+      }
+    }
+  }
+}

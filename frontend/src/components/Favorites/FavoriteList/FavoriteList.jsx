@@ -9,33 +9,26 @@ const FavoriteList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 1. Obtener el Token JWT
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!token) {
-        setError("Debes iniciar sesión para ver tus favoritos.");
+        // detenemos el loading
+        // el renderizado condicional se encargará de mostrar el aviso de login.
         setLoading(false);
         return;
       }
 
       try {
-        // Endpoint de API para obtener todos los favoritos
         const url = "http://localhost:5000/api/favorites";
-
         const response = await axios.get(url, {
-          headers: {
-            // el Token en el encabezado para autenticar
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        //  Guardamos el array de productos devueltos
         setFavorites(response.data);
       } catch (err) {
         console.error("Error al cargar favoritos:", err);
-        setError("Error al cargar la lista de favoritos.");
+        setError("Hubo un problema al conectar con el servidor.");
       } finally {
         setLoading(false);
       }
@@ -48,52 +41,72 @@ const FavoriteList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/favorites/`, {
         headers: { Authorization: `Bearer ${token}` },
-        data: { id_product: productId }
+        data: { id_product: productId },
       });
-
-      // eliminarlo del estado para actualizar la UI
       setFavorites((prev) => prev.filter((f) => f.id_product !== productId));
     } catch (err) {
       console.error("Error al borrar favorito:", err);
-      alert("No se pudo eliminar este favorito.");
+      alert("No se pudo eliminar el producto.");
     }
   };
 
-  if (loading) return <p>Cargando favoritos...</p>;
-
-  if (error) return <p>{error}</p>;
-
-  if (favorites.length === 0) {
+  // 1. Caso: Usuario no logueado
+  if (!token) {
     return (
-      <div>
-        <h1>Mis Favoritos</h1>
-        <p>No tienes productos marcados como favoritos.</p>
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h2>Acceso Restringido</h2>
+        <p>Para ver tu lista de favoritos, primero debes iniciar sesión.</p>
+        <button onClick={() => navigate("/login")}>Ir al Login</button>
       </div>
     );
   }
 
-  // Renderizado de la lista
+  // Cargando datos
+  if (loading)
+    return <p style={{ textAlign: "center" }}>Cargando favoritos...</p>;
+
+  // Error de servidor
+  if (error)
+    return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
+
+  // Lista vacía
+  if (favorites.length === 0) {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <h1>Mis Favoritos</h1>
+        <p>No tienes productos marcados como favoritos.</p>
+        <button onClick={() => navigate("/product")}>Ver Productos</button>
+      </div>
+    );
+  }
+
+  // Todo OK, renderizamos la lista
   return (
     <>
-      <h1>Mis Favoritos</h1>
-      <section>
+      <h1 style={{ textAlign: "center" }}>Mis Favoritos</h1>
+      <section className="favorites-list">
         {favorites.map((item) => (
-          // Usamos 'item.id_product' como key y para la navegación
           <article key={item.id_product}>
-            <img src={item.img} alt={item.name} style={{ width: "150px" }} />
-            <p>Nombre: {item.product_name}</p>
-            <p>Precio: ${item.price}</p>
-            <p>Valoraciones: <StarRating rating={item.relevancia} /></p>
-            <p>Proveedor: {item.provider_name}</p>
+            <img src={item.img} alt={item.product_name} />
 
-            <button onClick={() => navigate(`/product/${item.id_product}`)}>
-              Ver Detalles
-            </button>
-            <button onClick={() => deleteFavorite(item.id_product)}>
-              Eliminar Favorito
-            </button>
-            <br />
-            <br />
+            <div>
+              <span>{item.provider_name}</span>
+              <h3>{item.product_name}</h3>
+              <p>{item.description}</p>
+              <p className="price">${item.price}</p>
+              <div>
+                <StarRating rating={item.relevancia} />
+              </div>
+            </div>
+
+            <nav>
+              <button onClick={() => navigate(`/product/${item.id_product}`)}>
+                Ver Detalles
+              </button>
+              <button onClick={() => deleteFavorite(item.id_product)}>
+                Eliminar
+              </button>
+            </nav>
           </article>
         ))}
       </section>

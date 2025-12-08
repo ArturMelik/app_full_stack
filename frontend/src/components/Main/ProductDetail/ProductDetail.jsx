@@ -78,26 +78,40 @@ const ProductDetail = () => {
     };
 
     fetchData();
-  }, [id, page, sortField, sortOrder, searchTerm]); 
+  }, [id, page, sortField, sortOrder, searchTerm]);
 
   if (loading) return <p>Cargando...</p>;
 
   // Si hay un ID, mostramos detalle
   if (id && data) {
     return (
-      <div>
+      <section className="product-view">
         <h1>Detalle del Producto</h1>
-        <article className="product-detail">
-          <img src={data.img} alt={data.name} style={{ width: "200px" }} />
-          <p>Marca: {data.provider_name}</p>
-          <p>Nombre: {data.name}</p>
-          <p>Descripción: {data.description}</p>
-          <p>Precio: ${data.price}</p>
-          <p>
-            Valoraciones: <StarRating rating={data.relevancia} />
-          </p>
+
+        <article>
+          {/* Columna 1: Imagen */}
+          <div>
+            <img src={data.img} alt={data.name} />
+          </div>
+
+          {/* Columna 2: Datos */}
+          <div>
+            <span>{data.provider_name}</span>
+            <h2>{data.name}</h2>
+            <p>{data.description}</p>
+
+            <div className="price-box">
+              Precio: <strong>${data.price}</strong>
+            </div>
+
+            <div className="rating">
+              <StarRating rating={data.relevancia} />
+            </div>
+
+            <FavoriteButton productId={data.id_product} />
+          </div>
         </article>
-      </div>
+      </section>
     );
   }
 
@@ -108,28 +122,33 @@ const ProductDetail = () => {
         <h1>Todos los Productos</h1>
 
         {/* BUSCADOR */}
-        <input
-          type="text"
-          placeholder="Buscar por producto o marca..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: "5px", width: "250px" }}
-        />
+        <nav className="search-bar">
+          <input
+            type="text"
+            placeholder="Buscar por producto o marca..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
 
-        {/* BOTÓN DE BÚSQUEDA */}
-        <button
-          onClick={handleSearch}
-          style={{ marginLeft: "10px", padding: "5px 15px" }}
-        >
-          Buscar
-        </button>
+          <button onClick={handleSearch}>Buscar</button>
+        </nav>
 
-        <nav style={{ marginBottom: "20px" }}>
-          <button onClick={() => handleSort("name")}>
+        {/* Botones relevancia, precio, nombre */}
+        <nav className="filter-controls">
+          <span className="filter-label">Ordenar por:</span>
+
+          <button
+            onClick={() => handleSort("name")}
+            className={sortField === "name" ? "active" : ""}
+          >
             Nombre{" "}
             {sortField === "name" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
           </button>
-          <button onClick={() => handleSort("relevancia")}>
+
+          <button
+            onClick={() => handleSort("relevancia")}
+            className={sortField === "relevancia" ? "active" : ""}
+          >
             Relevancia{" "}
             {sortField === "relevancia"
               ? sortOrder === "asc"
@@ -137,41 +156,51 @@ const ProductDetail = () => {
                 : "▼"
               : ""}
           </button>
-          <button onClick={() => handleSort("price")}>
+
+          <button
+            onClick={() => handleSort("price")}
+            className={sortField === "price" ? "active" : ""}
+          >
             Precio{" "}
             {sortField === "price" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
           </button>
         </nav>
 
-        <section>
+        {/* Tarjeta Productos*/}
+        <section className="product-list">
           {data.map((item, idx) => (
-            <article key={idx}>
-              <img src={item.img} alt={item.name} style={{ width: "200px" }} />
-              <br />
-              <p> Marca: {item.provider_name}</p>
-              <p>Nombre: {item.name}</p>
+            <article className="card" key={idx}>
+              <img src={item.img} alt={item.name} />
+
               <p>
-                Valoraciones: <StarRating rating={item.relevancia} />
+                Marca: <strong>{item.provider_name}</strong>
               </p>
-              <p>Precio: ${item.price}</p>
-              <button onClick={() => navigate(`/product/${item.id_product}`)}>
-                Ver Detalles
-              </button>
-              <FavoriteButton productId={item.id_product} />
-              <br />
-              <br />
+              <p>{item.name}</p>
+
+              <div>
+                <StarRating rating={item.relevancia} />
+              </div>
+
+              <p className="price">${item.price}</p>
+
+              <div className="actions">
+                <button onClick={() => navigate(`/product/${item.id_product}`)}>
+                  Ver Detalles
+                </button>
+                <FavoriteButton productId={item.id_product} />
+              </div>
             </article>
           ))}
         </section>
 
         {/*CONTROLES DE PAGINACIÓN*/}
-        <div style={{ marginTop: "20px" }}>
+        <nav className="pagination">
           <button disabled={page === 1} onClick={() => setPage(page - 1)}>
             ◀ Anterior
           </button>
 
-          <span style={{ margin: "0 10px" }}>
-            Página {page} de {totalPages}
+          <span>
+            Página <strong>{page}</strong> de {totalPages}
           </span>
 
           <button
@@ -180,7 +209,7 @@ const ProductDetail = () => {
           >
             Siguiente ▶
           </button>
-        </div>
+        </nav>
       </>
     );
   }

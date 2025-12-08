@@ -1,0 +1,298 @@
+@use '../utils/variables' as variables;
+@use '../utils/mixins' as mixins;
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+// Taerjeta de producto individual
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+
+  .card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 220px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 5px 0;
+      font-size: 0.9rem;
+      color: #333;
+
+      // El párrafo del precio
+      &.price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #B12704; // Rojo tipo Amazon
+        margin: 10px 0;
+      }
+    }
+
+    // El div de las estrellas
+    div:first-of-type {
+      margin: 5px 0;
+    }
+
+    // El contenedor de botones
+    .actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      button {
+        background: #FFD814;
+        border: 1px solid #FCD200;
+        border-radius: 20px;
+        padding: 8px;
+        cursor: pointer;
+        font-weight: 500;
+
+        &:hover {
+          background: #F7CA00;
+        }
+      }
+    }
+  }
+  
+}
+
+
+//Botones de filtro de navegación
+.filter-controls {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center; // Alinea el texto y botones verticalmente
+  gap: 12px;
+  flex-wrap: wrap; // Por si hay muchos botones, que bajen de línea en móvil
+
+  // Estilo para el texto "Ordenar por:"
+  span {
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+  }
+
+  // Estilo para los botones (se mantiene igual, heredando del padre)
+  button {
+    background: #f0f2f5;
+    border: 1px solid #d1d5db;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #e5e7eb;
+    }
+
+    &.active {
+      background: #007185;
+      color: white;
+      border-color: #005f70;
+    }
+  }
+}
+
+// Barra de búsqueda de productos
+.search-bar {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+
+  // Estilo directo al input
+  input {
+    width: 280px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px; // Redondeado solo a la izquierda
+    outline: none;
+    font-size: 0.9rem;
+
+    &:focus {
+      border-color: #007185;
+    }
+  }
+
+  // Estilo directo al botón
+  button {
+    padding: 10px 20px;
+    background-color: #febd69; // Amarillo Amazon
+    border: 1px solid #a88734;
+    border-left: none; // Se fusiona con el input
+    border-radius: 0 4px 4px 0; // Redondeado solo a la derecha
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: #f3a847;
+    }
+  }
+}
+
+// Contenedor principal de detalles del producto
+.product-view {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+
+  h1 { font-size: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+  .content {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+
+    // Columna imagen
+    .image-box {
+      flex: 1;
+      img { width: 100%; border-radius: 8px; }
+    }
+
+    // Columna texto (heredando estilos)
+    .info-box {
+      flex: 1;
+
+      span { color: gray; font-size: 0.8rem; text-transform: uppercase; }
+      h2 { margin: 10px 0; font-size: 1.8rem; }
+      
+      .price { 
+        font-size: 1.5rem; 
+        color: #b12704; 
+        font-weight: bold; 
+        margin: 20px 0;
+      }
+
+      .desc p { line-height: 1.5; color: #444; }
+
+      button {
+        margin-top: 20px;
+        background: #ffd814;
+        border: 1px solid #a88734;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover { background: #f7ca00; }
+      }
+    }
+  }
+}
+
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
+  span {
+    font-size: 0.9rem;
+    color: #333;
+    strong { color: #111; }
+  }
+
+  button {
+    background: #fff;
+    border: 1px solid #d5d9d9;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: #f7fafa;
+      border-color: #adb1b8;
+    }
+
+    // Estilo para cuando el botón no se puede usar
+    &:disabled {
+      color: #767676;
+      background: #f0f2f2;
+      border-color: #d5d9d9;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}
+
+
+.product-view {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  article {
+    display: flex;
+    gap: 40px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+
+    // Primer div: La imagen
+    > div:first-child {
+      flex: 1;
+      img {
+        width: 100%;
+        border-radius: 8px;
+        object-fit: contain;
+      }
+    }
+
+    // Segundo div: La info
+    > div:last-child {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      span { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+      h2 { font-size: 1.8rem; margin: 0; }
+      p { line-height: 1.6; color: #444; }
+
+      .price-box {
+        font-size: 1.5rem;
+        strong { color: #b12704; }
+      }
+    }
+
+    // Responsive: Si la pantalla es pequeña, se pone uno debajo de otro
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+}

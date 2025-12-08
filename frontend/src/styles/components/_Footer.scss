@@ -1,0 +1,56 @@
+@use '../utils/mixins' as mixins;
+@use '../utils/variables' as variables;
+
+
+.main-footer {
+  background-color: #72a4e1; 
+  color: #ddd;
+  padding: 40px 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 30px;
+  margin-top: 50px; 
+  border-radius: 20px;
+
+  section {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+
+    h4 {
+      color: white;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        margin-bottom: 8px;
+        a {
+          color: #ddd;
+          text-decoration: none;
+          font-size: 0.9rem;
+          &:hover { color: #f08804; }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #3a4553;
+    padding-top: 20px;
+    margin-top: 20px;
+    p { font-size: 0.8rem; color: #888; }
+  }
+}
