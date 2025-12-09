@@ -1,0 +1,24 @@
+{
+  "name": "app_full_stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArturMelik/app_full_stack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArturMelik/app_full_stack/issues"
+  },
+  "homepage": "https://github.com/ArturMelik/app_full_stack#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

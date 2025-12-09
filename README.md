@@ -1,0 +1,167 @@
+📱 app_full_stack — Tienda Online de Móviles
+
+Un proyecto Full Stack desarrollado como aplicación de tienda online de dispositivos móviles.
+Incluye sistema de autenticación, exploración de productos, vista detallada, gestión de favoritos, búsqueda y filtrado.
+Desarrollado con React + Vite en el frontend y Node.js + Express + PostgreSQL en el backend.
+
+🚀 Características Principales
+
+•   🔐 Autenticación completa: Login y Registro con JWT y contraseñas encriptadas con bcrypt.
+
+•   🛒 Catálogo de móviles: Listado de productos con vista detalle.
+
+•   ⭐ Favoritos: Añadir y eliminar favoritos por usuario.
+
+•   🔍 Búsqueda: Filtrar móviles por nombre o palabras clave.
+
+•   🎚️ Filtros avanzados: Precio, proveedor, relevancia, etc.
+
+•   📱 Vista de detalle: Imagen, precio, descripción, proveedor y valoración.
+
+•   ⚡ Frontend rápido usando Vite y React Router.
+
+•   🗄️ Backend estructurado con Express y PostgreSQL.
+
+•   🔐 Protección de rutas privadas mediante JWT.
+
+🧩 Arquitectura del Proyecto
+app_full_stack/
+│
+├── frontend/         # React + Vite
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── backend/          # Node + Express + PostgreSQL
+│   ├── src/
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── db/
+│   └── package.json
+│
+└── package.json       # Script global (concurrently)
+
+🛠️ Tecnologías Utilizadas
+Frontend
+
+•   React
+
+•   Vite
+
+•   React Router
+
+•   Axios
+
+•   Sass
+
+
+Backend
+
+•   Node.js
+
+•   Express
+
+•   PostgreSQL
+
+•   JWT (autenticación)
+
+•   bcrypt (encriptación de contraseñas)
+
+•   dotenv
+
+•   JavaScript
+
+🗃️ Base de Datos (SQL — PostgreSQL)
+
+Tablas principales
+
+•   Usuarios
+
+•   Productos
+
+•   Favoritos
+
+•   Proveedores
+
+
+Relaciones
+
+•   Un proveedor tiene muchos productos
+
+•   Un usuario tiene muchos favoritos
+
+•   Un producto puede estar como favorito en muchos usuarios
+
+•   Relaciones 1-N y N-N resueltas mediante claves foráneas
+
+
+
+
+▶️ Instalación y Ejecución
+📌 1. Clonar el proyecto
+git clone https://github.com/ArturMelik/app_full_stack
+
+cd app_full_stack
+
+📌 2. Instalar dependencias del proyecto
+
+Desde la carpeta raíz:
+
+npm install
+
+📌 3. Arrancar frontend + backend simultáneamente
+npm run dev
+
+
+
+🔑 Variables de Entorno (backend)
+
+Crea un archivo .env dentro de backend/ con:
+
+PORT=3001
+DB_USER=postgres
+DB_PASSWORD=tu_password
+DB_HOST=localhost
+DB_NAME=nombre_db
+JWT_SECRET=tu_secreto
+
+
+(Modifica según tu configuración)
+
+🔌 Endpoints principales (API)
+
+(Opcional, completa según tu backend real)
+
+Usuarios
+
+•   POST /signup
+
+•   POST /login
+
+Productos
+
+•   GET /products
+
+•   GET /products/:id
+
+Favoritos
+
+•   GET /favorites/:userId
+
+•   POST /favorites
+
+•   DELETE /favorites/:id
+
+
+🖼️ Capturas de Pantalla
+
+(Añádelas cuando las tengas)
+![Captura principal de la App](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20232555.png)
+![Detalle](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20233100.png)
+![Favoritos](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20233314.png)
+
+🧑‍💻 Autor
+
+Artur Melik Adamyan
+Proyecto Full Stack — 2025
