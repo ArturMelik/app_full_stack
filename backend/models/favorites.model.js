@@ -11,7 +11,7 @@ const createFavoriteModel = async (id_user, id_product) => {
         const check = await client.query(queries.checkIfFavoriteExists, [id_user, id_product]);
         if (check.rows.length > 0) {
             // Si check.rows tiene resultados, significa que ya existe.
-            // Lanzamo un error CLARO para que el controlador lo capture.
+            // Lanzamos un error CLARO para que el controlador lo capture.
             throw new Error("Ya tienes este producto añadido a favoritos.");
         }
 
@@ -19,10 +19,7 @@ const createFavoriteModel = async (id_user, id_product) => {
         result = data.rows[0];
         
     } catch (err) {
-        // Error de clave foránea (el producto no existe) o clave única (ya es favorito)
-        if (err.code === '23503') {
-             throw new Error("El producto no existe o el ID de usuario es inválido.");
-        }
+        // Ya no revisamos err.code === '23503', solo logueamos y lanzamos
         console.error('Error en favoriteModel.createFavoriteModel:', err.message);
         throw err;
     } finally {
