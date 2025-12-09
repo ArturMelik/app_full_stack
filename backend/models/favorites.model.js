@@ -19,7 +19,6 @@ const createFavoriteModel = async (id_user, id_product) => {
         result = data.rows[0];
         
     } catch (err) {
-        // Ya no revisamos err.code === '23503', solo logueamos y lanzamos
         console.error('Error en favoriteModel.createFavoriteModel:', err.message);
         throw err;
     } finally {
