@@ -24,23 +24,11 @@ Desarrollado con React + Vite en el frontend y Node.js + Express + PostgreSQL en
 
 •   🔐 Protección de rutas privadas mediante JWT.
 
+
 🧩 Arquitectura del Proyecto
-app_full_stack/
-│
-├── frontend/         # React + Vite
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── backend/          # Node + Express + PostgreSQL
-│   ├── src/
-│   ├── controllers/
-│   ├── routes/
-│   ├── models/
-│   ├── db/
-│   └── package.json
-│
-└── package.json       # Script global (concurrently)
+
+![Arquitectura](./frontend/public/Arquitectura%20del%20proyecto.png)
+
 
 🛠️ Tecnologías Utilizadas
 Frontend
@@ -52,9 +40,6 @@ Frontend
 •   React Router
 
 •   Axios
-
-
-
 
 Backend
 
@@ -76,18 +61,6 @@ Tablas principales
 •   Favoritos
 
 •   Proveedores
-
-
-Relaciones
-
-•   Un proveedor tiene muchos productos
-
-•   Un usuario tiene muchos favoritos
-
-•   Un producto puede estar como favorito en muchos usuarios
-
-•   Relaciones 1-N y N-N resueltas mediante claves foráneas
-
 
 
 
