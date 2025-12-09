@@ -5,6 +5,33 @@ const { protect } = require('../middleware/auth.middleware'); // Opcional, si qu
 const { admin } = require('../middleware/admin.middleware'); // Opcional, si queremos que solo admins creen productos
 
 
+/**
+ * @swagger
+ * /search:
+ *   get:
+ *     tags:
+ *       - Productos
+ *     summary: Buscar productos
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sort
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: order
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de productos
+ */
 router.get('/search', productController.searchProducts);
 
 // http://localhost:5000/api-docs
