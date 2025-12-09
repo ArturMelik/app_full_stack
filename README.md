@@ -53,7 +53,7 @@ Frontend
 
 •   Axios
 
-•   Sass
+
 
 
 Backend
@@ -64,13 +64,6 @@ Backend
 
 •   PostgreSQL
 
-•   JWT (autenticación)
-
-•   bcrypt (encriptación de contraseñas)
-
-•   dotenv
-
-•   JavaScript
 
 🗃️ Base de Datos (SQL — PostgreSQL)
 
@@ -156,10 +149,10 @@ Favoritos
 
 🖼️ Capturas de Pantalla
 
-(Añádelas cuando las tengas)
-![Captura principal de la App](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20232555.png)
-![Detalle](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20233100.png)
-![Favoritos](../app_full_stack/frontend/public/Captura%20de%20pantalla%202025-12-09%20233314.png)
+
+![Captura principal de la App](./frontend/public/Products.png)
+![Detalle](./frontend/public/Detalles.png)
+![Favoritos](./frontend/public/Favorites.png)
 
 🧑‍💻 Autor
 
