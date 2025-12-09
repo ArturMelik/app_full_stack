@@ -5,7 +5,7 @@ function StarRating({ rating }) {
   // esto hace que el rating sea un número entre 0 y 5
   const starsCount = Math.min(5, Math.max(0, rating || 0)); 
   
-  // Creo una cadena de estrellas (★) y estrellas vacías (☆)
+  // repeat() se usa para crear varias estrellas según el rating.
   const solidStars = '★'.repeat(starsCount);
   const emptyStars = '☆'.repeat(5 - starsCount);
 

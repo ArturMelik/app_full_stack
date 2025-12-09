@@ -86,9 +86,9 @@
 .filter-controls {
   margin-bottom: 25px;
   display: flex;
-  align-items: center; // Alinea el texto y botones verticalmente
+  align-items: center; 
   gap: 12px;
-  flex-wrap: wrap; // Por si hay muchos botones, que bajen de línea en móvil
+  flex-wrap: wrap; 
 
   // Estilo para el texto "Ordenar por:"
   span {

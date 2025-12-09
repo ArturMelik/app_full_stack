@@ -58,7 +58,6 @@ const ProductDetail = () => {
         const response = await axios.get(url);
 
         if (!id) {
-          // Si es búsqueda o lista, response.data debería ser un array o contener la lista
           const products = searchTerm ? response.data : response.data.products;
           setData(products);
 
@@ -150,11 +149,7 @@ const ProductDetail = () => {
             className={sortField === "relevancia" ? "active" : ""}
           >
             Relevancia{" "}
-            {sortField === "relevancia"
-              ? sortOrder === "asc"
-                ? "▲"
-                : "▼"
-              : ""}
+            {sortField === "relevancia" ? sortOrder === "asc" ? "▲" : "▼" : ""}
           </button>
 
           <button
