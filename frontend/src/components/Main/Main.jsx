@@ -4,6 +4,8 @@ import Login from "./Login/Login.jsx";
 import ProductDetail from "./ProductDetail/ProductDetail.jsx";
 import Home from "../Home/Home.jsx";
 import FavoriteList from '../Favorites/FavoriteList/FavoriteList.jsx';
+import SignUp from "../Main/SignUp/SignUp.jsx";
+
 
 const Main = () => {
   return (
@@ -13,6 +15,8 @@ const Main = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/product/:id?" element={<ProductDetail />} />
         <Route path="/favorites" element={<FavoriteList />} />
+        <Route path="/signup" element={<SignUp />} />
+        
       </Routes>
     </main>
   );

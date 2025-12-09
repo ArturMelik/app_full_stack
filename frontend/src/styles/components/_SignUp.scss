@@ -1,0 +1,67 @@
+.auth-form {
+  max-width: 350px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+    color: #111;
+    text-align: center;
+  }
+
+  input {
+    padding: 12px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: #007185;
+      box-shadow: 0 0 0 2px rgba(0, 113, 133, 0.1);
+    }
+  }
+
+  button {
+    background: #ffd814;
+    border: 1px solid #fcd200;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f7ca00;
+    }
+  }
+
+  // Mensajes de error/éxito
+  .msg-error { color: #c40000; font-size: 0.85rem; text-align: center; }
+  .msg-success { color: #007600; font-size: 0.85rem; text-align: center; }
+
+  // Texto para saltar de Login a Signup
+  .redirect-text {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 10px;
+    text-align: center;
+    
+    span {
+      color: #007185;
+      cursor: pointer;
+      font-weight: bold;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
